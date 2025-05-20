@@ -226,3 +226,108 @@ To be RESTful, an API must follow these **6 key principles**:
 GET /users/1
 
 ```
+
+---
+
+# How REST is different than GraphQL?
+
+## REST API approach
+
+REST uses multiple endpoints, and the data returned is often fixed.
+
+### 💡 What the frontend needs:
+
+- User's name and email
+
+- List of the user's orders (only order ID and product name)
+
+---
+
+### REST Calls:
+
+1. GET /users/123
+   → Returns:
+
+```bash
+{
+  "id": "123",
+  "name": "John Doe",
+  "email": "john@example.com",
+  "phone": "1234567890",
+  "address": "New York"
+}
+```
+
+👉 **Problem:** More data than needed (e.g., phone, address).
+
+2. GET /users/123/orders
+   → Returns:
+
+```json
+[
+  {
+    "orderId": "001",
+    "productName": "Laptop",
+    "price": 1000,
+    "shippingDetails": { ... }
+  },
+  {
+    "orderId": "002",
+    "productName": "Mouse",
+    "price": 20,
+    "shippingDetails": { ... }
+  }
+]
+```
+
+👉 **Problem:** Again, more data than needed (e.g., price, shipping details).
+
+📌 You make multiple API calls and often get too much data.
+
+---
+
+## 🔹 GraphQL Approach
+
+GraphQL uses a single endpoint, and you ask exactly for what you need.
+
+### GraphQL Query:
+
+```graphql
+{
+  user(id: "123") {
+    name
+    email
+    orders {
+      orderId
+      productName
+    }
+  }
+}
+```
+
+-> Response
+
+```json
+{
+  "data": {
+    "user": {
+      "name": "John Doe",
+      "email": "john@example.com",
+      "orders": [
+        {
+          "orderId": "001",
+          "productName": "Laptop"
+        },
+        {
+          "orderId": "002",
+          "productName": "Mouse"
+        }
+      ]
+    }
+  }
+}
+```
+
+✅ **Only one request**
+✅ **Only the required fields are fetched**
+✅ **More efficient and cleaner**
